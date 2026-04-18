@@ -1,20 +1,43 @@
 .PHONY: up down logs restart ps test-load test-error test-latency test-log-error clean help
 
+# ── OS detection ───────────────────────────────────────────────────────────────
+ifeq ($(OS),Windows_NT)
+    DETECTED_OS := Windows
+else
+    UNAME_S := $(shell uname -s 2>/dev/null)
+    ifeq ($(UNAME_S),Linux)
+        DETECTED_OS := Linux
+    else ifeq ($(UNAME_S),Darwin)
+        DETECTED_OS := Mac
+    else
+        DETECTED_OS := Unknown
+    endif
+endif
+
+# ── Compose file selection ────────────────────────────────────────────────────
+ifeq ($(DETECTED_OS),Linux)
+    COMPOSE_FILES := -f docker-compose.yml
+else
+    COMPOSE_FILES := -f docker-compose.yml -f docker-compose.windows.yml
+endif
+
+DC := docker compose $(COMPOSE_FILES)
+
 # ── Core lifecycle ─────────────────────────────────────────────────────────────
 up:
-	docker compose up -d --build
+	$(DC) up -d --build
 
 down:
-	docker compose down -v
+	$(DC) down -v
 
 logs:
-	docker compose logs -f app
+	$(DC) logs -f app
 
 restart:
-	docker compose restart
+	$(DC) restart
 
 ps:
-	docker compose ps
+	$(DC) ps
 
 # ── Fault injection ────────────────────────────────────────────────────────────
 test-load:
@@ -31,11 +54,14 @@ test-log-error:
 
 # ── Housekeeping ───────────────────────────────────────────────────────────────
 clean:
-	docker compose down -v --remove-orphans
+	$(DC) down -v --remove-orphans
 	docker image prune -f
 
 # ── Help ───────────────────────────────────────────────────────────────────────
 help:
+	@echo ""
+	@echo "Detected OS: $(DETECTED_OS)"
+	@echo "Compose files: $(COMPOSE_FILES)"
 	@echo ""
 	@echo "  make up              Start all services (build if needed)"
 	@echo "  make down            Stop and remove containers + volumes"

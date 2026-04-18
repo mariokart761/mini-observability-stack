@@ -152,7 +152,7 @@ make test-log-error
 
 | Alert | 條件 | 持續時間 | Severity |
 |-------|------|---------|----------|
-| HighErrorRate | 5xx ratio > 10% | 2m | warning |
+| HighErrorRate | 5xx ratio > 10% | 30s | warning |
 | HighLatencyP95 | P95 latency > 2s | 5m | warning |
 | HostCPUHigh | CPU > 80% | 5m | critical |
 | ContainerMemoryHigh | Container memory > 85% limit | 5m | warning |

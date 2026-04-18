@@ -1,0 +1,62 @@
+// ── Docker container discovery ────────────────────────────────────────────────
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+// ── Relabeling：把 docker meta 轉成 Loki label ──────────────────────────────
+discovery.relabel "docker_logs" {
+  targets = discovery.docker.containers.targets
+
+  // container name  ->  label "container"
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    regex         = "/(.*)"
+    target_label  = "container"
+  }
+
+  // docker label "service"  ->  Loki label "service"
+  rule {
+    source_labels = ["__meta_docker_container_label_service"]
+    target_label  = "service"
+  }
+
+  // docker image  ->  label "image"
+  rule {
+    source_labels = ["__meta_docker_container_image_name"]
+    target_label  = "image"
+  }
+}
+
+// ── Collect logs from Docker containers ───────────────────────────────────────
+loki.source.docker "default" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.relabel.docker_logs.output
+  forward_to = [loki.process.json_parse.receiver]
+}
+
+// ── Optional: try to parse JSON logs, fall-through on failure ─────────────────
+loki.process "json_parse" {
+  stage.json {
+    expressions = {
+      level   = "level",
+      service = "service",
+      path    = "path",
+    }
+  }
+
+  stage.labels {
+    values = {
+      level   = "",
+      service = "",
+    }
+  }
+
+  forward_to = [loki.write.default.receiver]
+}
+
+// ── Send to Loki ───────────────────────────────────────────────────────────────
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}

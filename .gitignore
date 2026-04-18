@@ -1,0 +1,178 @@
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.python-version
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging / build
+build/
+dist/
+.eggs/
+*.egg-info/
+*.egg
+
+# Test / coverage / cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Logs
+*.log
+logs/
+*.pid
+*.pid.lock
+
+# Jupyter
+.ipynb_checkpoints/
+
+# =========================
+# FastAPI / local app env
+# =========================
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# SQLite / local DB files
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploaded / generated local files
+uploads/
+tmp/
+temp/
+
+# =========================
+# Node / frontend tooling
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Build outputs
+.next/
+.nuxt/
+dist-ssr/
+coverage/
+
+# =========================
+# Docker
+# =========================
+.docker/
+docker-data/
+*.tar
+
+# Docker Compose override/local files
+docker-compose.override.yml
+docker-compose.local.yml
+
+# =========================
+# Prometheus
+# =========================
+prometheus/data/
+prometheus/wal/
+prometheus/*.tmp
+
+# Keep config if you store it in repo
+# !prometheus/prometheus.yml
+# !prometheus/alerts.yml
+
+# =========================
+# Alertmanager
+# =========================
+alertmanager/data/
+alertmanager/*.tmp
+
+# Keep config if versioned
+# !alertmanager/alertmanager.yml
+
+# =========================
+# Grafana
+# =========================
+grafana/data/
+grafana/plugins/
+grafana/log/
+grafana/*.db
+
+# Keep provision files if versioned
+# !grafana/provisioning/
+
+# =========================
+# Loki
+# =========================
+loki/data/
+loki/wal/
+loki/index/
+loki/chunks/
+loki/boltdb-shipper-active/
+loki/boltdb-shipper-cache/
+loki/compactor/
+loki/*.tmp
+
+# Keep config if versioned
+# !loki/config.yml
+
+# =========================
+# Grafana Alloy
+# =========================
+alloy/data/
+alloy/wal/
+alloy/*.tmp
+
+# Keep config if versioned
+# !alloy/config.alloy
+
+# =========================
+# Exporters / monitoring runtime files
+# =========================
+node_exporter/textfile_collector/
+cadvisor/data/
+
+# =========================
+# Local generated secrets / certs
+# =========================
+secrets/
+*.pem
+*.key
+*.crt
+*.p12
+
+# =========================
+# Misc
+# =========================
+.cache/
+*.bak
+*.tmp
+專案草案.md
